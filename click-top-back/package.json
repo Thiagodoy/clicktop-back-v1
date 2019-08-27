@@ -1,0 +1,27 @@
+{
+  "name": "click-top-back",
+  "version": "1.0.0",
+  "description": "Endpoints",
+  "main": "app.js",
+  "scripts": {
+    "start":"nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://thiagodoy33@bitbucket.org/tryia/click-top-back.git"
+  },
+  "author": "Tryia",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/tryia/click-top-back#readme",
+  "devDependencies": {
+    "mongoose": "^5.6.11",
+    "nodemon": "^1.19.1"
+  },
+  "dependencies": {
+    "@hapi/joi": "^15.1.1",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15"
+  }
+}
