@@ -5,6 +5,7 @@ const schema = {
     lastName:Joi.string().min(6).required(),
     email:Joi.string().min(6).email().required(),
     password:Joi.string().min(6).required(),
+    telephones:Joi.array().min(1).required()
 }
 
 

@@ -1,15 +1,19 @@
 
+const jwt = require('jsonwebtoken');
 
+module.exports  = function (request, response, next){
 
-export function verifyJWT_MW(request, response, next){
-    let token = request.method === 'POST' ? request.body.token : request.query.token;
+    const token = request.header('Authorization');
+
+    if(!token)return response.status(401).send("Acesso negado");
+
+    try {
+        const verified = jwt.verify(token, process.env.TOKEN_SECRET);
+        request.user = verified;
+        next(); 
+    } catch (error) {
+        response.status(500).send("Token inválido");
+    }
     
     
-    verifyJWTToken(token).then(res=>{
-        request.user = res.data;
-        next();
-    }).catch(erro=>{
-        response.status(400).json({message:'Token invalid'});
-
-    });
 }
