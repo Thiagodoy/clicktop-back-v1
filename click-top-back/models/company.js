@@ -1,33 +1,62 @@
-const telephone = require('./telephone');
-const telephone = require('./category');
-const mongoose = require('mongoose');
 
 
-const pointSchema = new mongoose.Schema({
-    type: {
-      type: String,
-      enum: ['Point'],
-      required: true
-    },
-    coordinates: {
-      type: [Number],
-      required: true
-    }
-  });
 
-//Definition on Schema
-const CompanySchema = mongoose.Schema({
-    name:{type:String,default:'', trim:true},    
-    email:{type:String,default:'', trim:true},
-    description:{type:String,default:'', trim:true},
-    address:{type:String,default:'', trim:true},
-    telephones:{type:[telephone.schema]},
-    categorys:{type:[telephone.schema]},
-    location:{
-        type: pointSchema,
-        required: true
-    },
-    createdAt:{type:Date,default:Date.now}
-});
 
-module.exports = mongoose.model('Company', CompanySchema);
+const { Sequelize, sequelize} = require('../data/index');
+const Telephone = sequelize.import('./telephone');
+const Galery = sequelize.import('./galery');
+//const User = sequelize.import('./user');
+
+module.exports = (s, DataTypes) => {
+
+    class Company extends Sequelize.Model {}
+
+    Company.init({
+
+        id: {
+            type: Sequelize.BIGINT,
+            autoIncrement: true,
+            primaryKey: true
+        },
+        name: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        email: {
+            type: Sequelize.STRING
+        },
+        latitude: {
+            type: Sequelize.BIGINT
+        },
+        longitude: {
+            type: Sequelize.BIGINT
+        },
+        description: {
+            type: Sequelize.STRING
+        },
+        address: {
+            type: Sequelize.STRING
+        },       
+        address_neighborhood: {
+            type: Sequelize.STRING,                        
+        },
+        address_complement: {
+            type: Sequelize.STRING,                        
+        },
+        address_number: {
+            type: Sequelize.INTEGER,                        
+        }, 
+
+    }, {
+        sequelize,
+        modelName: 'company'
+    });
+
+
+    Company.hasMany(Telephone); 
+    Company.hasMany(Galery);
+    //Company.hasOne(User);
+
+    return Company;
+
+}

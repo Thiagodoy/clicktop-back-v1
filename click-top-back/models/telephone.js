@@ -1,10 +1,36 @@
-const mongoose = require('mongoose');
+const {sequelize,Sequelize} = require('../data');
 
-//Definition on Schema
-const TelephoneSchema = mongoose.Schema({
-    value:{type:String,default:'', trim:true},    
-    type:{type:String,default:'HOME',trim:true},
-    createdAt:{type:Date,default:Date.now}
-});
 
-module.exports = mongoose.model('Telephone', TelephoneSchema);
+
+module.exports = (s,DataTypes)=>{
+
+    class Telephone extends Sequelize.Model {}
+
+    Telephone.init({
+    
+        id: {
+            type: Sequelize.BIGINT,
+            autoIncrement: true,
+            primaryKey: true
+        },
+        number: {
+            type: Sequelize.STRING,
+            allowNull: false,            
+        },       
+        type: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            defaultValue: 'HOME'
+        },           
+    },{
+        sequelize,
+        modelName: 'telephone'
+      });
+    
+
+      //Telephone.sync({force:true });
+
+      return Telephone;
+
+}
+

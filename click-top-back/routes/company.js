@@ -1,15 +1,30 @@
 const express = require('express');
-const verifyToken = require('../middleware/middleware')
+const {middlewareJwt} = require('../middleware/middleware')
+const Company = require('../models/company');
+const companyValidation = require('../validation/company-validation');
 
 var router = express.Router();
 
 /** 
- * @summary Authentication on System
+ * @summary Save a company
  * @author Thiago Godoy
  * @method POST
  */
-router.post('',verifyToken, async (request, response) => {    
-    response.send(res);
+router.post('', middlewareJwt, async (request, response) => {
+
+
+    const {
+        error
+    } = companyValidation(request.body);
+    if (error) return response.status(400).send(error.details[0].message);
+
+    const company = new Company({
+        ...request.body
+    });
+
+    company.save();
+
+    response.send(company._id);
 });
 
 /** 
@@ -17,7 +32,9 @@ router.post('',verifyToken, async (request, response) => {
  * @author Thiago Godoy
  * @method GET 
  */
-router.get('',verifyToken, (request, response) => {
+router.get('', middlewareJwt, (request, response) => {
+
+
 
     // if(request.query.firstName)
     // if(request.query.lastName)
@@ -29,15 +46,15 @@ router.get('',verifyToken, (request, response) => {
  * @author Thiago Godoy
  * @method PUT 
  */
-router.put('',verifyToken, (request, response) => {});
+router.put('', middlewareJwt, (request, response) => {});
 
 /** 
  * @summary Save a company
  * @author Thiago Godoy
- * @method POST
+ * @method DELETE
  */
-router.post('',verifyToken, async (request, response) => {
-   
+router.delete('', middlewareJwt, async (request, response) => {
+
 
 });
 

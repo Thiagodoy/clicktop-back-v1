@@ -1,17 +1,49 @@
-const mongoose = require('mongoose');
-const telephone = require('./telephone');
+const {
+    Sequelize,
+    sequelize
+} = require('../data/index');
 
-//Definition on Schema
-const UserSchema = mongoose.Schema({
-    firstName:{type:String,default:'', trim:true},
-    lastName:{type:String,default:'', trim:true},
-    email:{type:String,default:'', trim:true},    
-    type:{type:String,default:'CLIENT'},
-    status:{type:String,default:'ACTIVE'},
-    company:{type:mongoose.Schema.Types.ObjectId,ref:'Company', default:undefined},
-    telephones:{type:[telephone.schema]},
-    password:{type:String,default:'', trim:true},
-    createdAt:{type:Date,default:Date.now}
-});
 
-module.exports = mongoose.model('User', UserSchema);
+const Company = sequelize.import('./company');
+
+module.exports = (s, DataTypes) => {
+
+    class User extends Sequelize.Model {}
+
+    
+    User.init({
+
+        id: {
+            type: Sequelize.BIGINT,
+            autoIncrement: true,
+            primaryKey: true
+        },
+        name: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        email: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        password: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        photo: {
+            type: Sequelize.STRING,
+            allowNull: true
+        },
+    }, {
+        sequelize,
+        modelName: 'user'
+    });
+
+       //User.sync({force:true}); 
+       User.hasOne(Company); 
+       Company.belongsTo(User);
+
+
+    return User;
+
+}
