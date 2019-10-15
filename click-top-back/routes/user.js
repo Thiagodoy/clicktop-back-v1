@@ -88,6 +88,21 @@ router.post('/avatar', [middlewareJwt, middlewareAvatarMulter.single('image')], 
 
 
 /** 
+ * @summary Load the photo of user
+ * @author Thiago Godoy
+ * @method GET
+ * */
+router.get('/avatar', [middlewareJwt], async(request, response)=>{
+
+    try {       
+        response.download(`./public/avatar/${request.query.name}`);
+    } catch (error) {                    
+        response.status(500).send(JSON.stringify(error));
+    }
+});
+
+
+/** 
  * @summary Delete a user
  * @author Thiago Godoy
  * @method DELETE 
