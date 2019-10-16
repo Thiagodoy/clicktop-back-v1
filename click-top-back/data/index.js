@@ -1,16 +1,16 @@
 const Sequelize = require('sequelize');
 
 const database = process.env.DATA_BASE;
+const host = process.env.DATA_BASE_HOST;
 const username = process.env.DATA_BASE_USER;
 const password = process.env.DATA_BASE_USER_PASSWORD;
 
-console.log(database, username, password)
+console.log(process.env,host,database, username, password);
 
 
 
 const sequelize = new Sequelize('clicktop', 'root', 'root', {
-    host:'localhost',
-    
+    host:host,    
     dialect: 'mysql',
     logging: function () {},
     pool: {
