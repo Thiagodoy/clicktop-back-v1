@@ -32,4 +32,34 @@ const middlewareAvatarMulter = (multer({
     })
 }));
 
-module.exports = {middlewareAvatarMulter,middlewareJwt}
+const middlewarePostMulter = (multer({
+    storage: multer.diskStorage({
+        destination: (request, file, cb) => {
+            cb(null, './public/post');
+        },
+        filename: (request, file, cb) => {                     
+            cb(null,`post-${request.user.id}-${file.originalname.split('.')[0]}-${Date.now()}.${file.originalname.split('.')[1]}`);
+        },
+        fileFilter: (req, file, cb) => {
+            const isAccepted = ['image/png', 'image/jpg', 'image/jpeg'].find(formatoAceito => formatoAceito == file.mimetype);
+            return isAccepted ? cb(null, true) : cb(null, false);
+        }
+    })
+}));
+
+const middlewareGaleryMulter = (multer({
+    storage: multer.diskStorage({
+        destination: (request, file, cb) => {
+            cb(null, './public/galery');
+        },
+        filename: (request, file, cb) => {                     
+            cb(null,`galery-${request.user.id}-${file.originalname.split('.')[0]}-${Date.now()}.${file.originalname.split('.')[1]}`);
+        },
+        fileFilter: (req, file, cb) => {
+            const isAccepted = ['image/png', 'image/jpg', 'image/jpeg'].find(formatoAceito => formatoAceito == file.mimetype);
+            return isAccepted ? cb(null, true) : cb(null, false);
+        }
+    })
+}));
+
+module.exports = {middlewareAvatarMulter,middlewareJwt,middlewarePostMulter,middlewareGaleryMulter }

@@ -17,11 +17,22 @@ module.exports = (s, DataTypes) => {
         },
         key: {
             type: Sequelize.STRING,
-            allowNull: false
+            allowNull: true,
+            defaultValue: '0',
         }, 
         image:{
             type: Sequelize.STRING,
             allowNull: false
+        } ,
+        instagran:{
+            type: Sequelize.INTEGER,
+            defaultValue: 0,
+            
+        } ,
+        faceboock:{
+            type: Sequelize.INTEGER,
+            defaultValue: 0,
+            
         }      
     }, {
         sequelize,

@@ -1,4 +1,27 @@
-module.exports = {
+const {sequelize} = require('../data')
+const State = sequelize.import('../models/state');
+const City = sequelize.import('../models/city');
+
+async function importData (){
+
+  for(let estado of data.estados){
+
+      let state = await State.create({name:estado.nome,initials:estado.sigla});
+      let cities = [];
+      
+      for(let city of estado.cidades){
+        cities.push({name:city,stateId:state.id});
+      }
+
+      let citiesPersiteds =  await City.bulkCreate(cities);
+
+      
+  }
+
+}
+
+
+const data =  {
     "estados": [
       {
         "sigla": "AC",
@@ -5724,3 +5747,5 @@ module.exports = {
       }
     ]
   };
+
+  module.exports = {importData};

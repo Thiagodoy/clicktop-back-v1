@@ -5,6 +5,9 @@
 const { Sequelize, sequelize} = require('../data/index');
 const Telephone = sequelize.import('./telephone');
 const Galery = sequelize.import('./galery');
+const Post = sequelize.import('./post');
+const Category = sequelize.import('./category');
+const City = sequelize.import('./city');
 //const User = sequelize.import('./user');
 
 module.exports = (s, DataTypes) => {
@@ -45,7 +48,17 @@ module.exports = (s, DataTypes) => {
         },
         address_number: {
             type: Sequelize.INTEGER,                        
+        },
+        facebook: {
+            type: Sequelize.STRING,                        
         }, 
+        instagran: {
+            type: Sequelize.STRING,                        
+        },
+        status: {
+            type: Sequelize.STRING,
+            defaultValue: 'ACTIVE'                        
+        },
 
     }, {
         sequelize,
@@ -55,7 +68,9 @@ module.exports = (s, DataTypes) => {
 
     Company.hasMany(Telephone); 
     Company.hasMany(Galery);
-    //Company.hasOne(User);
+    Company.hasMany(Post);
+    Company.belongsTo(Category,{foreignKey: 'id_category'});
+    Company.belongsTo(City,{foreignKey: 'id_city'});
 
     return Company;
 

@@ -34,6 +34,14 @@ module.exports = (s, DataTypes) => {
             type: Sequelize.STRING,
             allowNull: true
         },
+        status: {
+            type: Sequelize.STRING,
+            defaultValue: 'ACTIVE'                        
+        },
+        profile: {
+            type: Sequelize.STRING,
+            defaultValue: 'USER'                        
+        },
     }, {
         sequelize,
         modelName: 'user'
@@ -42,8 +50,7 @@ module.exports = (s, DataTypes) => {
        //User.sync({force:true}); 
        User.hasOne(Company); 
        Company.belongsTo(User);
-
-
+    
     return User;
 
 }

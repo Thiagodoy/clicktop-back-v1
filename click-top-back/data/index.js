@@ -5,11 +5,10 @@ const host = process.env.DATA_BASE_HOST;
 const username = process.env.DATA_BASE_USER;
 const password = process.env.DATA_BASE_USER_PASSWORD;
 
-console.log(process.env,host,database, username, password);
 
+console.info('database->',database, 'username->',username, 'password->',password,'host->',host)
 
-
-const sequelize = new Sequelize('clicktop', 'root', 'root', {
+const sequelize = new Sequelize(database, username, password, {
     host:host,    
     dialect: 'mysql',
     logging: function () {},
