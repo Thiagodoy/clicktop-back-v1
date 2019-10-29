@@ -5,8 +5,13 @@ const {
 const Op = Sequelize.Op;
 
 const UserService = require('../services/user-service');
+const StateService = require('../services/state-service');
+const CityService = require('../services/city-service');
+const ClientGoogleRest = require('../client/client-rest');
 const Company = sequelize.import('../models/company');
 const Galery = sequelize.import('../models/galery');
+
+
 
 
 class CompanyService {
@@ -28,7 +33,44 @@ class CompanyService {
             tempCompany.userId = user.id;
         }
 
+    
+        let resultCity = await CityService.findByPk(tempCompany.id_city);
+        let resultState = await StateService.findByPk(resultCity.stateId);
+
+        //company.address} ${company.address_number} ${company.city} ${company.state}`
+
+        let req = {
+            address: tempCompany.address,
+            address_number: tempCompany.address_number,
+            city: resultCity.name,
+            state: resultState.initials
+        }
+
+        let resultLocation = await this.getLocation(req);
+
+        tempCompany.latitude = resultLocation.lat;
+        tempCompany.longitude = resultLocation.lng;
+
         return await Company.create(tempCompany);
+
+    }
+
+    async getLocation(request){
+
+        let result  = await ClientGoogleRest.getAddress(request);
+        
+        if(result.length == 1){
+
+            let lat = result[0].geometry.location.lat;
+            let lng = result[0].geometry.location.lat;
+            return {lat,lng};
+        }else{
+            let lat = 0;
+            let lng = 0;
+            return {lat,lng};
+        }
+
+
 
     }
 

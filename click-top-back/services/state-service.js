@@ -18,5 +18,9 @@ class StateService {
         }
         return await State.findAll(opt);        
     }
+
+    async findByPk(id){
+        return await State.findByPk(id);
+    }
 }
 module.exports = new StateService();

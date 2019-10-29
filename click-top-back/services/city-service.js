@@ -31,6 +31,10 @@ class CityService {
 
         return await CityRepository.findAll(opt);
     }
+
+    async findByPk(id){
+        return await CityRepository.findByPk(id);
+    }
 }
 
 module.exports = new CityService();

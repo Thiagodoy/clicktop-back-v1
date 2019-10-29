@@ -33,7 +33,16 @@ module.exports = (s, DataTypes) => {
             type: Sequelize.INTEGER,
             defaultValue: 0,
             
-        }      
+        } ,
+        date_init:{
+            type: Sequelize.DATE,           
+            allowNull: false
+        },
+        date_end:{
+            type: Sequelize.DATE,
+            allowNull: false            
+        }              
+
     }, {
         sequelize,
         modelName: 'post'

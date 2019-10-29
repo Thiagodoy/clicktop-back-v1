@@ -29,10 +29,10 @@ module.exports = (s, DataTypes) => {
             type: Sequelize.STRING
         },
         latitude: {
-            type: Sequelize.BIGINT
+            type: Sequelize.STRING
         },
         longitude: {
-            type: Sequelize.BIGINT
+            type: Sequelize.STRING
         },
         description: {
             type: Sequelize.STRING
@@ -47,6 +47,9 @@ module.exports = (s, DataTypes) => {
             type: Sequelize.STRING,                        
         },
         address_number: {
+            type: Sequelize.INTEGER,                        
+        },
+        zip_code: {
             type: Sequelize.INTEGER,                        
         },
         facebook: {
