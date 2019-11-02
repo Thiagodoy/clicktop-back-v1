@@ -17,7 +17,7 @@ module.exports = (s, DataTypes) => {
             autoIncrement: true,
             primaryKey: true
         },
-        name: {
+        name_state: {
             type: Sequelize.STRING,            
             allowNull:false
         },
@@ -32,6 +32,7 @@ module.exports = (s, DataTypes) => {
     });
 
     State.hasOne(City)
+    City.belongsTo(State); 
 
     return State;
 

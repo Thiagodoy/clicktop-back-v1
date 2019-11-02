@@ -28,6 +28,7 @@ router.post('/avatar', [middlewareJwt, middlewareAvatarMulter.single('image')], 
 
 
         try {
+            console.log('request',request.body);
             if(request.file){
 
                 let user =  await UserService.findById( request.user.id);
@@ -125,3 +126,5 @@ router.post('', async (request, response) => {
 });
 
 module.exports = router;
+
+

@@ -62,7 +62,7 @@ class CompanyService {
         if(result.length == 1){
 
             let lat = result[0].geometry.location.lat;
-            let lng = result[0].geometry.location.lat;
+            let lng = result[0].geometry.location.lng;
             return {lat,lng};
         }else{
             let lat = 0;

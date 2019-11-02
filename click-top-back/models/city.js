@@ -4,6 +4,8 @@ const {
 } = require('../data/index');
 
 
+//const State = sequelize.import('./state');
+
 
 
 module.exports = (s, DataTypes) => {
@@ -18,7 +20,7 @@ module.exports = (s, DataTypes) => {
             primaryKey: true
         },
 
-        name: {
+        name_city: {
             type: Sequelize.STRING,            
                     
         },
@@ -28,7 +30,8 @@ module.exports = (s, DataTypes) => {
         modelName: 'city'
     });
 
-    
+   // City.hasOne(State,{foreignKey:'stateId'});
+   
 
     return City;
 

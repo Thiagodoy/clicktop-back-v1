@@ -1,6 +1,7 @@
 const { sequelize,Sequelize} = require('../data');
 const Op = Sequelize.Op;
 const CityRepository = sequelize.import('../models/city');
+const State = sequelize.import('../models/state');
 
 class CityService {
 
@@ -12,11 +13,17 @@ class CityService {
 
         let opt = {};
 
+       
+        console.log(sequelize.models);
+
         if (!!name) {
-            opt.where = {};
-            opt.where.name = {
-                [Op.like]: `${name}%`
-            }
+            opt = {
+                where: Sequelize.where(
+                  Sequelize.fn("UPPER", Sequelize.col("name_city")),                  
+                  {[Op.like] : `${name.toUpperCase()}%`},                 
+                )
+              };
+            
         }
 
 
@@ -27,7 +34,9 @@ class CityService {
             }
         }
 
-        //opt.include = [{model:State}];
+
+      
+        opt.include = [{model:State}];
 
         return await CityRepository.findAll(opt);
     }
