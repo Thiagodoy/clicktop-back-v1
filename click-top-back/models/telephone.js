@@ -27,7 +27,7 @@ module.exports = (s,DataTypes)=>{
         modelName: 'telephone'
       });
     
-
+      
       //Telephone.sync({force:true });
 
       return Telephone;

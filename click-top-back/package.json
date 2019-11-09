@@ -16,8 +16,6 @@
   "homepage": "https://bitbucket.org/tryia/click-top-back#readme",
   "devDependencies": {
     "bcryptjs": "^2.4.3",
-    "mongoose": "^5.6.11",
-    "mongoose-paginate": "^5.0.3",
     "nodemon": "^1.19.1"
   },
   "dependencies": {

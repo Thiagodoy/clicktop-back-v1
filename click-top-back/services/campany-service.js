@@ -7,6 +7,8 @@ const Op = Sequelize.Op;
 const UserService = require('../services/user-service');
 const StateService = require('../services/state-service');
 const CityService = require('../services/city-service');
+const TelephoneService = require('../services/telephone-service');
+const GaleryService = require('../services/galery-service');
 const ClientGoogleRest = require('../client/client-rest');
 const Company = sequelize.import('../models/company');
 const Galery = sequelize.import('../models/galery');
@@ -19,41 +21,95 @@ class CompanyService {
     async save(request, response) {
 
         let user = undefined;
-        if (request.body.user) {
+        let tempPhones = undefined;        
+        let temGalery = undefined
 
-            user = await UserService.save(request,request.body.user)
-            delete request.body.user;
+        try{
+
+            if (request.body.user) {
+                user = await UserService.save(request,request.body.user)
+                delete request.body.user;
+            }
+    
+            
+            if(request.body.telephones){
+                tempPhones = request.body.telephones;
+                delete request.body.telephones;
+            }   
+            
+            if(request.body.galery){
+                temGalery = request.body.galery;
+                delete request.body.galery;
+            }
+    
+    
+            let tempCompany = {
+                ...request.body
+            };
+    
+            if (user) {
+                tempCompany.userId = user.id;
+            }
+    
+        
+            let resultCity = await CityService.findByPk(parseInt(tempCompany.id_city));
+            let resultState = await StateService.findByPk(resultCity.stateId);
+
+            tempCompany.id_category = parseInt(tempCompany.id_category);
+    
+            //company.address} ${company.address_number} ${company.city} ${company.state}`
+    
+            // let req = {
+            //     address: tempCompany.address,
+            //     address_number: tempCompany.address_number,
+            //     city: resultCity.name_city,
+            //     state: resultState.initials
+            // }
+    
+            // let resultLocation = await this.getLocation(req);
+    
+            // tempCompany.latitude = resultLocation.lat;
+            // tempCompany.longitude = resultLocation.lng;       
+    
+            
+            let resultCompany =  await Company.create(tempCompany);
+    
+            if(tempPhones){
+                tempPhones.forEach(t=>{
+                    t.companyId = resultCompany.id;
+                });
+    
+                let resultPhones = await TelephoneService.saveList(tempPhones);
+                console.log(resultPhones);
+            }
+    
+            if(temGalery){
+                temGalery.forEach(g=>{
+                    g.companyId = resultCompany.id;
+                });
+                
+                let resultGalery = await GaleryService.save(temGalery);
+                console.log(resultGalery);
+            }
+    
+    
+            return resultCompany;
+    
+
+        }catch(error){
+
+            if(user){
+                await UserService.delete(user);
+            }
+
+            console.log(error);
+            throw error;
         }
 
-        let tempCompany = {
-            ...request.body
-        };
-
-        if (user) {
-            tempCompany.userId = user.id;
-        }
+        
+    }
 
     
-        let resultCity = await CityService.findByPk(tempCompany.id_city);
-        let resultState = await StateService.findByPk(resultCity.stateId);
-
-        //company.address} ${company.address_number} ${company.city} ${company.state}`
-
-        let req = {
-            address: tempCompany.address,
-            address_number: tempCompany.address_number,
-            city: resultCity.name,
-            state: resultState.initials
-        }
-
-        let resultLocation = await this.getLocation(req);
-
-        tempCompany.latitude = resultLocation.lat;
-        tempCompany.longitude = resultLocation.lng;
-
-        return await Company.create(tempCompany);
-
-    }
 
     async getLocation(request){
 

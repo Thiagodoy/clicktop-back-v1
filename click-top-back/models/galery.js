@@ -18,13 +18,12 @@ module.exports = (s, DataTypes) => {
             primaryKey: true
         },
 
-        path: {
-            type: Sequelize.STRING,    
+        image: {
+            type: Sequelize.TEXT,    
 
         },
         type: {
-            type: Sequelize.STRING,                                
-            defaultValue:'OTHERS',            
+            type: Sequelize.STRING,                                                        
         },
       
     }, {

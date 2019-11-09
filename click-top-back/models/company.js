@@ -50,7 +50,10 @@ module.exports = (s, DataTypes) => {
             type: Sequelize.INTEGER,                        
         },
         zip_code: {
-            type: Sequelize.INTEGER,                        
+            type: Sequelize.STRING,                        
+        },
+        website:{
+            type:Sequelize.STRING
         },
         facebook: {
             type: Sequelize.STRING,                        
@@ -62,7 +65,24 @@ module.exports = (s, DataTypes) => {
             type: Sequelize.STRING,
             defaultValue: 'ACTIVE'                        
         },
-
+        main_products:{
+            type: Sequelize.STRING,            
+        },        
+        opening_hours:{
+            type: Sequelize.STRING,            
+        },
+        closing_hours:{
+            type: Sequelize.STRING,            
+        },
+        link_whats:{
+            type: Sequelize.STRING,            
+        },
+        keys:{
+            type: Sequelize.STRING
+        },
+        company_point:{
+            type: Sequelize.GEOMETRY('POINT'),            
+        }
     }, {
         sequelize,
         modelName: 'company'

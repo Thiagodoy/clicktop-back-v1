@@ -32,7 +32,7 @@ const User = sequelize.import('./models/user');
 
 //importData();
 
-//sequelize.sync({force:true})
+//sequelize.sync({force:true});
 
 
 

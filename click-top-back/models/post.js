@@ -21,7 +21,7 @@ module.exports = (s, DataTypes) => {
             defaultValue: '0',
         }, 
         image:{
-            type: Sequelize.STRING,
+            type: Sequelize.TEXT,
             allowNull: false
         } ,
         instagran:{

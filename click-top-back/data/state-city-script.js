@@ -6,11 +6,11 @@ async function importData (){
 
   for(let estado of data.estados){
 
-      let state = await State.create({name:estado.nome,initials:estado.sigla});
+      let state = await State.create({name_state:estado.nome,initials:estado.sigla});
       let cities = [];
       
       for(let city of estado.cidades){
-        cities.push({name:city,stateId:state.id});
+        cities.push({name_city:city,stateId:state.id});
       }
 
       let citiesPersiteds =  await City.bulkCreate(cities);

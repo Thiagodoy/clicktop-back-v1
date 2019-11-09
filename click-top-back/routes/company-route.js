@@ -12,7 +12,7 @@ const CompanyService = require('../services/campany-service');
  * @author Thiago Godoy
  * @method POST
  */
-router.post('', middlewareJwt, async (request, response) => {
+router.post('',  async (request, response) => {
 
 
     try {    

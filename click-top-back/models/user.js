@@ -30,8 +30,8 @@ module.exports = (s, DataTypes) => {
             type: Sequelize.STRING,
             allowNull: false
         },
-        photo: {
-            type: Sequelize.STRING,
+        image: {
+            type: Sequelize.TEXT,
             allowNull: true
         },
         status: {

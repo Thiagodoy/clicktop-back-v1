@@ -20,7 +20,8 @@ class UserService {
         let result = await UserRepository.findAll({
             include:[{model: Company}],
             where: {
-                email: {[Op.like]:`${email.toUpperCase()}%`}
+                email: {[Op.like]:`${email.toUpperCase()}%`}, 
+                status: {[Op.like]:'ACTIVE'}               
             }
         });
 
@@ -29,11 +30,11 @@ class UserService {
 
     async delete(request){
 
-        const id  =  request.param.id;
+        const id  =  (request.param) ? request.param.id : request.id;
 
-        return await UserRepository.update({status: 'DEACTIVATED'},{
-             where: {id: id}
-        });
+        const user =  UserRepository.findByPk(id);
+
+        return await user.destroy();
     }
 
     async save(request,userCompany) {        
