@@ -82,7 +82,10 @@ module.exports = (s, DataTypes) => {
         },
         company_point:{
             type: Sequelize.GEOMETRY('POINT'),            
-        }
+        },
+        plan: {
+            type: Sequelize.INTEGER,                        
+        },
     }, {
         sequelize,
         modelName: 'company'
