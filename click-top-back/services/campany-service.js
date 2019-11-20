@@ -132,8 +132,8 @@ class CompanyService {
 
     async list(request) {
 
-        let limit = request.query.limit ? request.query.limit : 10
-        let offset = request.query.offset ? request.query.offset : 10
+        let limit = request.query.limit ? parseInt(request.query.limit) : 10
+        let offset = request.query.offset ? parseInt(request.query.offset) : 1
 
 
 

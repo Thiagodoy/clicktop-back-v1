@@ -7,7 +7,7 @@ const CompanyService = require('../services/campany-service');
 
 
 
-/** 
+/**
  * @summary Save a company
  * @author Thiago Godoy
  * @method POST
@@ -15,27 +15,28 @@ const CompanyService = require('../services/campany-service');
 router.post('',  async (request, response) => {
 
 
-    try {    
+    try {
         const result = await CompanyService.save(request,response);
-     
+
         if(result){
             response.send();
         }else{
-           response.status(500).send('Não foi possivel salvar a compania');     
+           response.status(500).send('Não foi possivel salvar a compania');
         }
 
     } catch (error) {
         response.status(500).send(error.message);
     }
-    
+
 });
 
-/** 
+/**
  * @summary List companys
  * @author Thiago Godoy
- * @method GET 
+ * @method GET
  */
-router.get('', middlewareJwt, async (request, response) => {
+ // middlewareJwt
+router.get('', async (request, response) => {
 
     try {
         const result = await CompanyService.list(request);
@@ -47,10 +48,10 @@ router.get('', middlewareJwt, async (request, response) => {
 });
 
 
-/** 
+/**
  * @summary List galery of photos from Company
  * @author Thiago Godoy
- * @method GET 
+ * @method GET
  */
 router.get('/galery', middlewareJwt, async (request, response) => {
 
@@ -63,7 +64,7 @@ router.get('/galery', middlewareJwt, async (request, response) => {
 
 });
 
-/** 
+/**
  * @summary Save a photo that is associate a company
  * @author Thiago Godoy
  * @method POST
@@ -92,7 +93,7 @@ router.post('/galery', [middlewareJwt, middlewareGaleryMulter.single('image')], 
  * @summary Delete a photo from galery
  * @author Thiago Godoy
  * @param id
- * @method DELETE  
+ * @method DELETE
  */
 router.delete('/galery/:id', [middlewareJwt], async (request, response) => {
         try {
@@ -106,14 +107,14 @@ router.delete('/galery/:id', [middlewareJwt], async (request, response) => {
 
 
 
-/** 
+/**
  * @summary Update a company
  * @author Thiago Godoy
- * @method PUT 
+ * @method PUT
  */
 router.put('', middlewareJwt, (request, response) => {});
 
-/** 
+/**
  * @summary Save a company
  * @author Thiago Godoy
  * @method DELETE

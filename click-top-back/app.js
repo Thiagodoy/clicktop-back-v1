@@ -28,9 +28,9 @@ const Category = sequelize.import('./models/category');
 const User = sequelize.import('./models/user');
 
 //const {importData} = require('./data/state-city-script');
-//const {importData} = require('./data/category-script');
+const {importData} = require('./data/category-script');
 
-//importData();
+importData();
 
 //sequelize.sync({force:true});
 
