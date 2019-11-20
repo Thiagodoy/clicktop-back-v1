@@ -47,6 +47,9 @@ class CompanyService {
                 ...request.body
             };
     
+            delete tempCompany.city;
+            delete tempCompany.category;
+
             if (user) {
                 tempCompany.userId = user.id;
             }
@@ -80,7 +83,7 @@ class CompanyService {
                 });
     
                 let resultPhones = await TelephoneService.saveList(tempPhones);
-                console.log(resultPhones);
+                
             }
     
             if(temGalery){
@@ -89,7 +92,7 @@ class CompanyService {
                 });
                 
                 let resultGalery = await GaleryService.save(temGalery);
-                console.log(resultGalery);
+                
             }
     
     
