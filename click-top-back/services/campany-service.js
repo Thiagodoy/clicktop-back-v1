@@ -12,6 +12,7 @@ const GaleryService = require('../services/galery-service');
 const ClientGoogleRest = require('../client/client-rest');
 const Company = sequelize.import('../models/company');
 const Galery = sequelize.import('../models/galery');
+const Telephone = sequelize.import('../models/telephone');
 
 
 
@@ -105,7 +106,6 @@ class CompanyService {
                 await UserService.delete(user);
             }
 
-            console.log(error);
             throw error;
         }
 
@@ -138,11 +138,21 @@ class CompanyService {
         let limit = request.query.limit ? parseInt(request.query.limit) : 10
         let offset = request.query.offset ? parseInt(request.query.offset) : 1
 
+        let include = [];
 
+        if(request.query.galery){
+            include.push({ model: Galery });
+        }
+
+        if(request.query.telephone){
+            include.push({ model: Telephone });
+        }
 
         if (!!request.query.id) {
-            return await Company.findByPk(request.query.id);
+            return await Company.findByPk(request.query.id,{include:include});
         }
+
+       
 
         if (!!request.query.name) {
             return await Company.findAll({
@@ -152,7 +162,8 @@ class CompanyService {
                     name: {
                         [Op.like]: `${request.query.name}%`
                     }
-                }
+                },
+                include:include
             });
         }
 
@@ -164,13 +175,15 @@ class CompanyService {
                     email: {
                         [Op.like]: `${request.query.email}%`
                     }
-                }
+                },
+                include:include
             });
         }
 
         return await Company.findAll({
             limit,
             offset,
+            include:include
         });
 
     }

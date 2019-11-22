@@ -36,7 +36,7 @@ router.post('',  async (request, response) => {
  * @method GET
  */
  // middlewareJwt
-router.get('', async (request, response) => {
+router.get('', middlewareJwt,async (request, response) => {
 
     try {
         const result = await CompanyService.list(request);
