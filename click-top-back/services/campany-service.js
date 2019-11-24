@@ -113,6 +113,110 @@ class CompanyService {
     }
 
     
+    async update(request){
+        
+        const company = await Company.findByKey(request.body.id)
+        const companyUpdate = request.body;
+
+        if(company.name !== companyUpdate.name){
+            company.name = companyUpdate.name;
+        }
+
+        if(company.email !== companyUpdate.email){
+            company.email = companyUpdate.email;
+        }
+
+        if(company.description !== companyUpdate.description){
+            company.description = companyUpdate.description;
+        }
+
+        if(company.address !== companyUpdate.address){
+            company.address = companyUpdate.address;
+        }
+
+        if(company.address_neighborhood !== companyUpdate.address_neighborhood){
+            company.address_neighborhood = companyUpdate.address_neighborhood;
+        }
+
+        if(company.address_complement !== companyUpdate.address_complement){
+            company.address_complement = companyUpdate.address_complement;
+        }
+
+        if(company.address_number !== companyUpdate.address_number){
+            company.address_number = companyUpdate.address_number;
+        }
+
+        if(company.zip_code !== companyUpdate.zip_code){
+            company.zip_code = companyUpdate.zip_code;
+        }
+
+        if(company.website !== companyUpdate.website){
+            company.website = companyUpdate.website;
+        }
+
+        if(company.facebook !== companyUpdate.facebook){
+            company.facebook = companyUpdate.facebook;
+        }
+
+        if(company.instagran !== companyUpdate.instagran){
+            company.instagran = companyUpdate.instagran;
+        }
+
+        if(company.main_products !== companyUpdate.main_products){
+            company.main_products = companyUpdate.main_products;
+        }
+
+        if(company.opening_hours !== companyUpdate.opening_hours){
+            company.opening_hours = companyUpdate.opening_hours;
+        }
+
+        if(company.closing_hours !== companyUpdate.closing_hours){
+            company.closing_hours = companyUpdate.closing_hours;
+        }
+
+        if(company.keys !== companyUpdate.keys){
+            company.keys = companyUpdate.keys;
+        }
+
+        if(company.plan !== companyUpdate.plan){
+            company.plan = companyUpdate.plan;
+        }
+
+        let tempPhones = undefined;        
+        let temGalery = undefined;
+
+        if(request.body.telephones){
+            tempPhones = request.body.telephones;
+            delete request.body.telephones;
+        }   
+        
+        if(request.body.galery){
+            temGalery = request.body.galery;
+            delete request.body.galery;
+        }
+
+        await company.save(); 
+        await TelephoneService.deleteByCompanyId(id);
+        await GaleryService.deleteByCompanyId(id);
+
+        if(tempPhones){
+            tempPhones.forEach(t=>{
+                t.companyId = company.id;
+            });
+            await TelephoneService.saveList(tempPhones);            
+        }
+
+        if(temGalery){
+            temGalery.forEach(g=>{
+                g.companyId = company.id;
+            });            
+            await GaleryService.save(temGalery);            
+        }
+
+        return Promise.resolve();
+
+    }
+
 
     async getLocation(request){
 
@@ -190,11 +294,14 @@ class CompanyService {
 
     async delete(request){
 
-         const id  =  request.param.id;
+        const id  =  request.param.id;
+        const company = Company.findByKey(id);
+        await TelephoneService.deleteByCompanyId(id);
+        await GaleryService.deleteByCompanyId(id);
+        await UserService.delete({id});
+        
+        return await company.destroy();
 
-        return await Company.update({status: 'DEACTIVATED'},{
-             where: {id: id}
-        });
     }
 
     async saveGalery(request,image){

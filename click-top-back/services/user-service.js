@@ -26,7 +26,7 @@ class UserService {
         });
 
         return result;
-    }
+    }    
 
     async delete(request){
 

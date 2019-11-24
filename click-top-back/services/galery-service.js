@@ -13,5 +13,9 @@ class GaleryService{
         const galery = await GaleryService.findByPk(id);
         return await galery.destroy();
     }
+
+    async deleteByCompanyId(id){
+        const { results, metadata} = await sequelize.query(`DELETE FROM galeries where companyId = ${id}`); 
+    }
 }
 module.exports = new GaleryService();

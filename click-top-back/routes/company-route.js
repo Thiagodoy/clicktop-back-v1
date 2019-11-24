@@ -1,5 +1,8 @@
 const express = require('express');
-const {middlewareJwt,middlewareGaleryMulter} = require('../middleware/middleware')
+const {
+    middlewareJwt,
+    middlewareGaleryMulter
+} = require('../middleware/middleware')
 const companyValidation = require('../validation/company-validation');
 
 var router = express.Router();
@@ -12,16 +15,16 @@ const CompanyService = require('../services/campany-service');
  * @author Thiago Godoy
  * @method POST
  */
-router.post('',  async (request, response) => {
+router.post('', async (request, response) => {
 
 
     try {
-        const result = await CompanyService.save(request,response);
+        const result = await CompanyService.save(request, response);
 
-        if(result){
+        if (result) {
             response.send();
-        }else{
-           response.status(500).send('Não foi possivel salvar a compania');
+        } else {
+            response.status(500).send('Não foi possivel salvar a compania');
         }
 
     } catch (error) {
@@ -35,8 +38,8 @@ router.post('',  async (request, response) => {
  * @author Thiago Godoy
  * @method GET
  */
- // middlewareJwt
-router.get('', middlewareJwt,async (request, response) => {
+// middlewareJwt
+router.get('', middlewareJwt, async (request, response) => {
 
     try {
         const result = await CompanyService.list(request);
@@ -72,19 +75,19 @@ router.get('/galery', middlewareJwt, async (request, response) => {
 router.post('/galery', [middlewareJwt, middlewareGaleryMulter.single('image')], async (request, response) => {
 
 
-        try {
+    try {
 
-                if (request.file) {
-                        const result = await CompanyService.saveGalery(request, request.file.filename);
-                        response.send(result);
-                } else {
-                        response.status(500).send('Erro ao realizar o upload da imagem');
-                }
-
-
-        } catch (error) {
-                response.status(500).send(error.message);
+        if (request.file) {
+            const result = await CompanyService.saveGalery(request, request.file.filename);
+            response.send(result);
+        } else {
+            response.status(500).send('Erro ao realizar o upload da imagem');
         }
+
+
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
 
 
 });
@@ -96,12 +99,12 @@ router.post('/galery', [middlewareJwt, middlewareGaleryMulter.single('image')], 
  * @method DELETE
  */
 router.delete('/galery/:id', [middlewareJwt], async (request, response) => {
-        try {
-                await CompanyService.deleteFromGalery(request);
-                response.send();
-        } catch (error) {
-                response.status(500).send(error.message);
-        }
+    try {
+        await CompanyService.deleteFromGalery(request);
+        response.send();
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
 
 });
 
@@ -112,7 +115,15 @@ router.delete('/galery/:id', [middlewareJwt], async (request, response) => {
  * @author Thiago Godoy
  * @method PUT
  */
-router.put('', middlewareJwt, (request, response) => {});
+router.put('', middlewareJwt, (request, response) => {
+
+    try {
+        await CompanyService.update(request);
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
+
+});
 
 /**
  * @summary Save a company
@@ -120,8 +131,12 @@ router.put('', middlewareJwt, (request, response) => {});
  * @method DELETE
  */
 router.delete('', middlewareJwt, async (request, response) => {
-
-
+    try {
+        await CompanyService.delete(request);
+        response.send();
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
 });
 
 module.exports = router;
