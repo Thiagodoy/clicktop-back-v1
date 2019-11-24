@@ -13,10 +13,12 @@ class TelefoneService{
     }
 
     async deleteList(telephones){
-        telephones.forEach( telephone => {            
-            t = await TelefoneService.findByPk(telephone.id);
-            await t.destroy();
-        });
+
+        let ids =  telephones.map( telephone => {            
+           return telephone.id;
+        }).join(',');
+
+        const { results, metadata} = await sequelize.query(`DELETE FROM telephones where id in(${ids}`);               
     }
 
     async deleteByCompanyId(id){

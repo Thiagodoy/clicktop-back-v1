@@ -115,7 +115,7 @@ router.delete('/galery/:id', [middlewareJwt], async (request, response) => {
  * @author Thiago Godoy
  * @method PUT
  */
-router.put('', middlewareJwt, (request, response) => {
+router.put('', middlewareJwt, async (request, response) => {
 
     try {
         await CompanyService.update(request);
