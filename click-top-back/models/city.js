@@ -24,6 +24,12 @@ module.exports = (s, DataTypes) => {
             type: Sequelize.STRING,            
                     
         },
+        latitude: {
+            type: Sequelize.STRING
+        },
+        longitude: {
+            type: Sequelize.STRING
+        },       
       
     }, {
         sequelize,

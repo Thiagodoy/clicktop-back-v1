@@ -80,8 +80,11 @@ module.exports = (s, DataTypes) => {
         keys:{
             type: Sequelize.STRING
         },
-        company_point:{
-            type: Sequelize.GEOMETRY('POINT'),            
+        latilong:{
+            type: Sequelize.BLOB,            
+        },
+        point_text:{
+            type: Sequelize.STRING,
         },
         plan: {
             type: Sequelize.INTEGER,                        

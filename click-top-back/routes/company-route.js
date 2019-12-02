@@ -38,7 +38,7 @@ router.post('', async (request, response) => {
  * @author Thiago Godoy
  * @method GET
  */
-// middlewareJwt
+// middlewareJwt listLocation
 router.get('', middlewareJwt, async (request, response) => {
 
     try {
@@ -50,6 +50,23 @@ router.get('', middlewareJwt, async (request, response) => {
 
 });
 
+
+/**
+ * @summary List companys
+ * @author Thiago Godoy
+ * @method GET
+ */
+// middlewareJwt listLocation
+router.get('/listLocation', middlewareJwt, async (request, response) => {
+
+    try {
+        const result = await CompanyService.listLocation();
+        response.send(result[0]);
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
+
+});
 
 /**
  * @summary List galery of photos from Company

@@ -19,6 +19,16 @@ const Telephone = sequelize.import('../models/telephone');
 
 class CompanyService {
 
+
+    async listLocation(){
+
+        return await sequelize.query(`SELECT id FROM clicktop.companies c 
+                                                    where ST_Distance(latilong, ST_GeomFromText('POINT(-21.7685791 -48.167224)', 4326)) <= 10000`, 
+                                                    { raw: true });
+
+
+
+    }
     async save(request, response) {
 
         let user = undefined;
@@ -63,18 +73,19 @@ class CompanyService {
     
             //company.address} ${company.address_number} ${company.city} ${company.state}`
     
-            // let req = {
-            //     address: tempCompany.address,
-            //     address_number: tempCompany.address_number,
-            //     city: resultCity.name_city,
-            //     state: resultState.initials
-            // }
+            let req = {
+                address: tempCompany.address,
+                address_number: tempCompany.address_number,
+                city: resultCity.name_city,
+                state: resultState.initials
+            }
     
-            // let resultLocation = await this.getLocation(req);
+             let resultLocation = await this.getLocation(req);
     
-            // tempCompany.latitude = resultLocation.lat;
-            // tempCompany.longitude = resultLocation.lng;       
-    
+             tempCompany.latitude = `${resultLocation.lat}`;
+             tempCompany.longitude = `${resultLocation.lng}`;
+             tempCompany.point_text  = `POINT(${resultLocation.lat} ${resultLocation.lng})`;    
+            
             
             let resultCompany =  await Company.create(tempCompany);
     
@@ -83,7 +94,7 @@ class CompanyService {
                     t.companyId = resultCompany.id;
                 });
     
-                let resultPhones = await TelephoneService.saveList(tempPhones);
+                await TelephoneService.saveList(tempPhones);
                 
             }
     
@@ -92,7 +103,7 @@ class CompanyService {
                     g.companyId = resultCompany.id;
                 });
                 
-                let resultGalery = await GaleryService.save(temGalery);
+                await GaleryService.save(temGalery);
                 
             }
     

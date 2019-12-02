@@ -30,11 +30,13 @@ class UserService {
 
     async delete(request){
 
-        const id  =  (request.param) ? request.param.id : request.id;
+        // const id  =  (request.param) ? request.param.id : request.id;
 
-        const user =  UserRepository.findByPk(id);
+        // const user =  UserRepository.findByPk(id);
 
-        return await user.destroy();
+        // return await user.destroy();
+
+        const { results, metadata} = await sequelize.query(`DELETE FROM users where id =${id}`);  
     }
 
     async save(request,userCompany) {        
