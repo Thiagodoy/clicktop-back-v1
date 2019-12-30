@@ -18,7 +18,7 @@ class UserService {
     async findByEmail(email) {
 
         let result = await UserRepository.findAll({
-            include:[{model: Company}],
+            //include:[{model: Company}],
             where: {
                 email: {[Op.like]:`${email.toUpperCase()}%`}, 
                 status: {[Op.like]:'ACTIVE'}               
