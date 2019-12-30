@@ -252,6 +252,8 @@ class CompanyService {
 
         let limit = request.query.limit ? parseInt(request.query.limit) : 10
         let offset = request.query.offset ? parseInt(request.query.offset) : 1
+        let id_city = request.query.id_city ? parseInt(request.query.id_city) : undefined;
+        let distance = request.query.distance ? parseInt(request.query.distance) : undefined;
 
         let include = [];
 
@@ -268,6 +270,25 @@ class CompanyService {
         }
 
        
+        if(id_city && distance){
+
+            const city =  await CityService.findByPk(parseInt(tempCompany.id_city));
+            const ids = sequelize.query(`SELECT id FROM clicktop.companies c 
+                                         where ST_Distance(latilong, ST_GeomFromText('POINT(${city.latitude} ${city.longitude})', 4326)) <= ${distance * 1000} LIMIT ${offset},${limit}`, 
+                                                    { raw: true });
+            return await Company.findAll({                
+                where: {
+                    id: {
+                        [Op.in]: ids
+                    }
+                },
+                include:include
+            });
+
+
+
+        }
+
 
         if (!!request.query.name) {
             return await Company.findAll({

@@ -4,6 +4,7 @@
   "description": "Endpoints",
   "main": "app.js",
   "scripts": {
+    "thiago":"nodemon -r dotenv/config app.js dotenv_config_path=.env.dev",
     "start": "nodemon app.js",
     "debug": "nodemon --inspect app.js"
   },
