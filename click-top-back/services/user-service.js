@@ -15,10 +15,12 @@ class UserService {
         return await UserRepository.findByPk(id);        
     }
 
-    async findByEmail(email) {
+    async findByEmail(email, isAuth) {
+
+        let include = isAuth ? [{model: Company}] : [];
 
         let result = await UserRepository.findAll({
-            //include:[{model: Company}],
+            include,
             where: {
                 email: {[Op.like]:`${email.toUpperCase()}%`}, 
                 status: {[Op.like]:'ACTIVE'}               
@@ -30,13 +32,9 @@ class UserService {
 
     async delete(request){
 
-        // const id  =  (request.param) ? request.param.id : request.id;
-
-        // const user =  UserRepository.findByPk(id);
-
-        // return await user.destroy();
-
-        const { results, metadata} = await sequelize.query(`DELETE FROM users where id =${id}`);  
+        const id  =  (request.param) ? request.param.id : request.id;        
+        await sequelize.query(`DELETE FROM users where id =${id}`); 
+        
     }
 
     async save(request,userCompany) {        
@@ -148,6 +146,7 @@ class UserService {
         }
 
         const user = await this.findByEmail(request.body.email);
+        
         if (user.length == 0) {
             throw new Error('Email inválido!');
         }
@@ -161,7 +160,7 @@ class UserService {
             email: user[0].email,
             name: user[0].name,
             id: user[0].id,
-            companyId: user[0].company ? user[0].company.id :null
+            companyId: user[0].company ? user[0].company.id : null
         };
 
 

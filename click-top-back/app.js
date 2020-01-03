@@ -16,6 +16,7 @@ const routerCategory =  require('./routes/category-route');
 const routerCity =  require('./routes/city-route');
 const routerState =  require('./routes/state-route');
 const routerPost =  require('./routes/post-route');
+const routerPlan =  require('./routes/plan-route');
 const routerVersion =  require('./routes/version-router');
 
 const {sequelize} = require('./data/index');
@@ -27,26 +28,10 @@ const Post = sequelize.import('./models/post');
 const Category = sequelize.import('./models/category');
 const User = sequelize.import('./models/user');
 
-//const {importData} = require('./data/state-city-script');
 const {importData} = require('./data/category-script');
-
-importData();
+//importData();
 
 //sequelize.sync({force:true});
-
-
-
-
-
-
-
-
-
-
-
-
-
-//mongoose.connect(process.env.URL_DATA_BASE,{useNewUrlParser:true},()=>console.log("DB is connected!"))
 
 app.use(express.json());
 
@@ -57,6 +42,7 @@ app.use('/api/city', routerCity);
 app.use('/api/state', routerState);
 app.use('/api/post', routerPost);
 app.use('/api/version', routerVersion);
+app.use('/api/plan',routerPlan)
 
 
 //app.get('/',(req,res)=> res.send('Olá'));

@@ -187,10 +187,10 @@ class CompanyService {
 
         if(company.keys !== companyUpdate.keys){
             company.keys = companyUpdate.keys;
-        }
+        }       
 
-        if(company.plan !== companyUpdate.plan){
-            company.plan = companyUpdate.plan;
+        if(company.id_plan !== companyUpdate.id_plan){
+            company.id_plan = companyUpdate.id_plan;
         }
 
         let tempPhones = undefined;        
@@ -232,7 +232,7 @@ class CompanyService {
     async getLocation(request){
 
         let result  = await ClientGoogleRest.getAddress(request);
-        
+                
         if(result.length == 1){
 
             let lat = result[0].geometry.location.lat;
@@ -251,9 +251,10 @@ class CompanyService {
     async list(request) {
 
         let limit = request.query.limit ? parseInt(request.query.limit) : 10
-        let offset = request.query.offset ? parseInt(request.query.offset) : 1
+        let offset = request.query.offset ? parseInt(request.query.offset) : 0
         let id_city = request.query.id_city ? parseInt(request.query.id_city) : undefined;
         let distance = request.query.distance ? parseInt(request.query.distance) : undefined;
+        let id = request.query.id ? parseInt(request.query.id) : undefined;
 
         let include = [];
 
@@ -265,12 +266,9 @@ class CompanyService {
             include.push({ model: Telephone });
         }
 
-        if (!!request.query.id) {
+        if (!!id) {
             return await Company.findByPk(request.query.id,{include:include});
-        }
-
-       
-        if(id_city && distance){
+        }else if(id_city && distance){
 
             const city =  await CityService.findByPk(parseInt(tempCompany.id_city));
             const ids = sequelize.query(`SELECT id FROM clicktop.companies c 
@@ -284,13 +282,7 @@ class CompanyService {
                 },
                 include:include
             });
-
-
-
-        }
-
-
-        if (!!request.query.name) {
+        }else if (!!request.query.name) {
             return await Company.findAll({
                 limit,
                 offset,
@@ -301,9 +293,7 @@ class CompanyService {
                 },
                 include:include
             });
-        }
-
-        if (!!request.query.email) {
+        }else if (!!request.query.email) {
             return await Company.findAll({
                 limit,
                 offset,
@@ -314,23 +304,24 @@ class CompanyService {
                 },
                 include:include
             });
+        }else{
+            return await Company.findAll({
+                limit,
+                offset,
+                include:include
+            });
         }
 
-        return await Company.findAll({
-            limit,
-            offset,
-            include:include
-        });
 
     }
 
     async delete(request){
 
-        const id  =  request.param.id;
-        const company = Company.findByKey(id);
+        const id  =  request.query.id;
+        const company = await Company.findByPk(id);
         await TelephoneService.deleteByCompanyId(id);
         await GaleryService.deleteByCompanyId(id);
-        await UserService.delete({id});
+        await UserService.delete({id:company.userId});
         
         return await company.destroy();
 

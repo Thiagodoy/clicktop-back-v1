@@ -143,7 +143,7 @@ router.put('', middlewareJwt, async (request, response) => {
 });
 
 /**
- * @summary Save a company
+ * @summary Delete a company
  * @author Thiago Godoy
  * @method DELETE
  */

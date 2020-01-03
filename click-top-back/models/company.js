@@ -8,7 +8,7 @@ const Galery = sequelize.import('./galery');
 const Post = sequelize.import('./post');
 const Category = sequelize.import('./category');
 const City = sequelize.import('./city');
-//const User = sequelize.import('./user');
+const Plan = sequelize.import('./plan');
 
 module.exports = (s, DataTypes) => {
 
@@ -86,20 +86,20 @@ module.exports = (s, DataTypes) => {
         point_text:{
             type: Sequelize.STRING,
         },
-        plan: {
+        id_plan: {
             type: Sequelize.INTEGER,                        
         },
     }, {
         sequelize,
         modelName: 'company'
     });
-
-
+    
     Company.hasMany(Telephone); 
     Company.hasMany(Galery);
     Company.hasMany(Post);
     Company.belongsTo(Category,{foreignKey: 'id_category'});
     Company.belongsTo(City,{foreignKey: 'id_city'});
+    Company.belongsTo(Plan,{foreignKey: 'id_plan'});
 
     return Company;
 

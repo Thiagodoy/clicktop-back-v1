@@ -16,11 +16,7 @@ module.exports = (s,DataTypes)=>{
         name: {
             type: Sequelize.STRING,
             allowNull: false,            
-        },       
-        group_name: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },           
+        },                      
     },{
         sequelize,
         modelName: 'categories'

@@ -3,7 +3,20 @@ const Category = sequelize.import('../models/category');
 
 async function importData(){
 
-Category.bulkCreate([
+    let map = new Map();
+
+    data.forEach(element => {
+        map.set(element.group_name, '');
+    });
+
+
+    for(let key of map.keys()){                
+        await Category.create({name:key});  
+    }
+
+};
+
+const data = [
     {name:'Adestradores', group_name:'Animais e Plantas'},
     {name:'Assistência Técnica Agropecuária', group_name:'Animais e Plantas'},
     {name:'Banho e Tosa', group_name:'Animais e Plantas'},
@@ -359,7 +372,7 @@ Category.bulkCreate([
     {name:'TV por Assinatura',group_name:'Serviços'},
     {name:'TV/Áudio/Vídeo',group_name:'Serviços'},
     {name:'Viagens e Turismo',group_name:'Serviços'},
-])
-};
+];
+
 
 module.exports = {importData };
