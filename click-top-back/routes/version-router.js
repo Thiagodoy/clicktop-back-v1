@@ -10,11 +10,8 @@ const package = require('../package.json');
  * @author Thiago Godoy
  * @method GET 
  */
-router.get('', async(request, response) => {    
-
+router.get('', async(request, response) => { 
    response.send(package.version);
-
-
 });
 
 
