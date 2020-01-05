@@ -45,7 +45,7 @@ app.use('/category',routerCategory);
 app.use('/city', routerCity);
 app.use('/state', routerState);
 app.use('/post', routerPost);
-app.use('/version', routerVersion);
+app.use('version', routerVersion);
 app.use('/plan',routerPlan)
 
 
