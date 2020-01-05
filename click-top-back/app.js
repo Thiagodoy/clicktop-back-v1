@@ -35,18 +35,18 @@ const {importData} = require('./data/category-script');
 
 app.use(express.json());
 
-app.use('/',async(req,resp)=>{
-    resp.send("Bem vindo a api CLICK-TOP!")
-});
+// app.use('/',async(req,resp)=>{
+//     resp.send("Bem vindo a api CLICK-TOP!")
+// });
 
-app.use('/api/company',routerCompany);
-app.use('/api/user',routerUser);
-app.use('/api/category',routerCategory);
-app.use('/api/city', routerCity);
-app.use('/api/state', routerState);
-app.use('/api/post', routerPost);
+app.use('/company',routerCompany);
+app.use('/user',routerUser);
+app.use('/category',routerCategory);
+app.use('/city', routerCity);
+app.use('/state', routerState);
+app.use('/post', routerPost);
 app.use('/version', routerVersion);
-app.use('/api/plan',routerPlan)
+app.use('/plan',routerPlan)
 
 
 //app.get('/',(req,res)=> res.send('Olá'));

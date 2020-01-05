@@ -20,7 +20,7 @@ module.exports = {
     env_production: {
       NODE_ENV: 'production',
       TOKEN_SECRET: 'THODJYR8954834)(*&#',
-      DATA_BASE_HOST: '72.167.225.133',
+      DATA_BASE_HOST: 'localhost',
       DATA_BASE: 'clicktop',
       DATA_BASE_USER: 'clicktop',
       DATA_BASE_USER_PASSWORD: 'hpuseGun-2pq'
