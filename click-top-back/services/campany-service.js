@@ -126,7 +126,7 @@ class CompanyService {
 
     async update(request){
 
-        const company = await Company.findByKey(request.body.id)
+        const company = await Company.findByPk(request.body.id)
         const companyUpdate = request.body;
 
         if(company.name !== companyUpdate.name){
