@@ -22,8 +22,8 @@ class CompanyService {
 
     async listLocation(){
 
-        return await sequelize.query(`SELECT id FROM clicktop.companies c 
-                                                    where ST_Distance(latilong, ST_GeomFromText('POINT(-21.7685791 -48.167224)', 4326)) <= 10000`, 
+        return await sequelize.query(`SELECT id FROM clicktop.companies c
+                                                    where ST_Distance(latilong, ST_GeomFromText('POINT(-21.7685791 -48.167224)', 4326)) <= 10000`,
                                                     { raw: true });
 
 
@@ -32,7 +32,7 @@ class CompanyService {
     async save(request, response) {
 
         let user = undefined;
-        let tempPhones = undefined;        
+        let tempPhones = undefined;
         let temGalery = undefined
 
         try{
@@ -41,75 +41,75 @@ class CompanyService {
                 user = await UserService.save(request,request.body.user)
                 delete request.body.user;
             }
-    
-            
+
+
             if(request.body.telephones){
                 tempPhones = request.body.telephones;
                 delete request.body.telephones;
-            }   
-            
+            }
+
             if(request.body.galery){
                 temGalery = request.body.galery;
                 delete request.body.galery;
             }
-    
-    
+
+
             let tempCompany = {
                 ...request.body
             };
-    
+
             delete tempCompany.city;
             delete tempCompany.category;
 
             if (user) {
                 tempCompany.userId = user.id;
             }
-    
-        
+
+
             let resultCity = await CityService.findByPk(parseInt(tempCompany.id_city));
             let resultState = await StateService.findByPk(resultCity.stateId);
 
             tempCompany.id_category = parseInt(tempCompany.id_category);
-    
+
             //company.address} ${company.address_number} ${company.city} ${company.state}`
-    
+
             let req = {
                 address: tempCompany.address,
                 address_number: tempCompany.address_number,
                 city: resultCity.name_city,
                 state: resultState.initials
             }
-    
+
              let resultLocation = await this.getLocation(req);
-    
+
              tempCompany.latitude = `${resultLocation.lat}`;
              tempCompany.longitude = `${resultLocation.lng}`;
-             tempCompany.point_text  = `POINT(${resultLocation.lat} ${resultLocation.lng})`;    
-            
-            
+             tempCompany.point_text  = `POINT(${resultLocation.lat} ${resultLocation.lng})`;
+
+
             let resultCompany =  await Company.create(tempCompany);
-    
+
             if(tempPhones){
                 tempPhones.forEach(t=>{
                     t.companyId = resultCompany.id;
                 });
-    
+
                 await TelephoneService.saveList(tempPhones);
-                
+
             }
-    
+
             if(temGalery){
                 temGalery.forEach(g=>{
                     g.companyId = resultCompany.id;
                 });
-                
+
                 await GaleryService.save(temGalery);
-                
+
             }
-    
-    
+
+
             return resultCompany;
-    
+
 
         }catch(error){
 
@@ -120,12 +120,12 @@ class CompanyService {
             throw error;
         }
 
-        
+
     }
 
-    
+
     async update(request){
-        
+
         const company = await Company.findByKey(request.body.id)
         const companyUpdate = request.body;
 
@@ -191,26 +191,26 @@ class CompanyService {
 
         if(company.keys !== companyUpdate.keys){
             company.keys = companyUpdate.keys;
-        }       
+        }
 
         if(company.id_plan !== companyUpdate.id_plan){
             company.id_plan = companyUpdate.id_plan;
         }
 
-        let tempPhones = undefined;        
+        let tempPhones = undefined;
         let temGalery = undefined;
 
         if(request.body.telephones){
             tempPhones = request.body.telephones;
             delete request.body.telephones;
-        }   
-        
+        }
+
         if(request.body.galery){
             temGalery = request.body.galery;
             delete request.body.galery;
         }
 
-        await company.save(); 
+        await company.save();
         await TelephoneService.deleteByCompanyId(id);
         await GaleryService.deleteByCompanyId(id);
 
@@ -218,14 +218,14 @@ class CompanyService {
             tempPhones.forEach(t=>{
                 t.companyId = company.id;
             });
-            await TelephoneService.saveList(tempPhones);            
+            await TelephoneService.saveList(tempPhones);
         }
 
         if(temGalery){
             temGalery.forEach(g=>{
                 g.companyId = company.id;
-            });            
-            await GaleryService.save(temGalery);            
+            });
+            await GaleryService.save(temGalery);
         }
 
         return Promise.resolve();
@@ -236,8 +236,8 @@ class CompanyService {
     async getLocation(request){
 
         let result  = await ClientGoogleRest.getAddress(request);
-                
-        if(result.length == 1){
+
+        if(result && result.length == 1){
 
             let lat = result[0].geometry.location.lat;
             let lng = result[0].geometry.location.lng;
@@ -275,10 +275,10 @@ class CompanyService {
         }else if(id_city && distance){
 
             const city =  await CityService.findByPk(parseInt(tempCompany.id_city));
-            const ids = sequelize.query(`SELECT id FROM clicktop.companies c 
-                                         where ST_Distance(latilong, ST_GeomFromText('POINT(${city.latitude} ${city.longitude})', 4326)) <= ${distance * 1000} LIMIT ${offset},${limit}`, 
+            const ids = sequelize.query(`SELECT id FROM clicktop.companies c
+                                         where ST_Distance(latilong, ST_GeomFromText('POINT(${city.latitude} ${city.longitude})', 4326)) <= ${distance * 1000} LIMIT ${offset},${limit}`,
                                                     { raw: true });
-            return await Company.findAll({                
+            return await Company.findAll({
                 where: {
                     id: {
                         [Op.in]: ids
@@ -321,18 +321,18 @@ class CompanyService {
 
     async delete(request){
 
-        const id  =  request.query.id;
+        const id  = request.query.id;
         const company = await Company.findByPk(id);
         await TelephoneService.deleteByCompanyId(id);
         await GaleryService.deleteByCompanyId(id);
         await UserService.delete({id:company.userId});
-        
+
         return await company.destroy();
 
     }
 
     async saveGalery(request,image){
-        
+
         const user = request.user;
         const galery = request.body;
 
@@ -350,7 +350,7 @@ class CompanyService {
     async deleteFromGalery(request) {
         const id = request.params.id;
         const galery = await Galery.findByPk(id);
-        fs.unlinkSync(`./public/galery/${galery.path}`);    
+        fs.unlinkSync(`./public/galery/${galery.path}`);
         const result = await galery.destroy();
         return result;
     }

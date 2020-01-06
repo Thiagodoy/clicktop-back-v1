@@ -12,7 +12,10 @@ class ClientGoogleMapsRest{
 
         let tempUrl = `${this._url}?key=${this._key}&address=${company.address} ${company.address_number} ${company.city} ${company.state}`
 
-        return await axios.get(tempUrl).then(response=> response.data.results);
+        return await axios.get(tempUrl).then(response=> response.data.results).catch(error=>{
+            console.log('Error ao buscar o endereço');
+            return null;
+        });
     }
 
 }
