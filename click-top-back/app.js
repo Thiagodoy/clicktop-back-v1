@@ -39,14 +39,14 @@ app.use(express.json());
 //     resp.send("Bem vindo a api CLICK-TOP!")
 // });
 
-app.use('/company',routerCompany);
-app.use('/user',routerUser);
-app.use('/category',routerCategory);
-app.use('/city', routerCity);
-app.use('/state', routerState);
-app.use('/post', routerPost);
-app.use('version', routerVersion);
-app.use('/plan',routerPlan)
+app.use('/api/company',routerCompany);
+app.use('/api/user',routerUser);
+app.use('/api/category',routerCategory);
+app.use('/api/city', routerCity);
+app.use('/api/state', routerState);
+app.use('/api/post', routerPost);
+app.use('/api/version', routerVersion);
+app.use('/api/plan',routerPlan)
 
 
 //app.get('/',(req,res)=> res.send('Olá'));
