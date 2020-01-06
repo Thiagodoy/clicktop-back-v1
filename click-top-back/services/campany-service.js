@@ -135,6 +135,10 @@ class CompanyService {
 
         if(company.email !== companyUpdate.email){
             company.email = companyUpdate.email;
+
+            let user = UserService.findById(company.userId);
+            user.email = company.email.toUpperCase();
+            await user.save();
         }
 
         if(company.description !== companyUpdate.description){
