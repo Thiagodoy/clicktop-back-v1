@@ -126,7 +126,8 @@ class CompanyService {
 
     async update(request){
 
-        const company = await Company.findByPk(request.body.id)
+        const id = request.body.id;
+        const company = await Company.findByPk(id);
         const companyUpdate = request.body;
 
         if(company.name !== companyUpdate.name){
@@ -136,9 +137,10 @@ class CompanyService {
         if(company.email !== companyUpdate.email){
             company.email = companyUpdate.email;
 
-            let user = UserService.findById(company.userId);
+            let user = await UserService.findById(company.userId);
             user.email = company.email.toUpperCase();
-            await user.save();
+            await UserService.update({user});
+            
         }
 
         if(company.description !== companyUpdate.description){

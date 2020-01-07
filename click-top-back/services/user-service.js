@@ -114,25 +114,35 @@ class UserService {
 
     async update(request){ 
 
+
+        const userTemp  = request.user ? request.user : request.body;    
+
         const user = await this.findById(request.user.id);
 
-        if(!!request.body.name && request.body.name !== user.name){
-            user.name = request.body.name;
+        if(!!userTemp.name && userTemp.name !== user.name){
+            user.name = userTemp.name;
         }
 
-        if(!!request.body.email && request.body.email !== user.email){
-            user.email = request.body.email;
+        if(!!userTemp.email && userTemp.email !== user.email){
+            user.email = userTemp.email;
         }
 
 
-        const validPass = await bcrypt.compare(request.body.oldPassword, user.password);
+        let oldPassword = userTemp.oldPassword ? userTemp.oldPassword : userTemp.password; 
+
+        if(userTemp.oldPassword){
+            const validPass = await bcrypt.compare(oldPassword, user.password);
         
-        if (!validPass){
-            throw new Error('Password inválido!');
-        } 
+            if (!validPass){
+                throw new Error('Password inválido!');
+            } 
+    
+            const salt = await bcrypt.genSalt(10);
+            user.password = await bcrypt.hash(request.body.newPassword, salt);
+        }
 
-        const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(request.body.newPassword, salt);
+
+       
 
         return await user.save();
 

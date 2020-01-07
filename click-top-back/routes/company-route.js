@@ -136,6 +136,7 @@ router.put('', middlewareJwt, async (request, response) => {
 
     try {
         await CompanyService.update(request);
+        response.send();
     } catch (error) {
         response.status(500).send(error.message);
     }
