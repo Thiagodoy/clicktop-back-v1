@@ -47,8 +47,7 @@ module.exports = (s, DataTypes) => {
             defaultValue: 'ACTIVE'                        
         },
         profile: {
-            type: Sequelize.STRING,
-            defaultValue: 'USER'                        
+            type: Sequelize.STRING,                                   
         },
     }, {
         sequelize,

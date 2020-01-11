@@ -170,6 +170,7 @@ class UserService {
             email: user[0].email,
             name: user[0].name,
             id: user[0].id,
+            profile:user[0].profile,
             companyId: user[0].company ? user[0].company.id : null
         };
 

@@ -37,10 +37,10 @@ class CompanyService {
 
         try{
 
-            if (request.body.user) {
-                user = await UserService.save(request,request.body.user)
-                delete request.body.user;
-            }
+            // if (request.body.user) {
+            //     user = await UserService.save(request,request.body.user)
+            //     delete request.body.user;
+            // }
 
 
             if(request.body.telephones){
@@ -113,9 +113,9 @@ class CompanyService {
 
         }catch(error){
 
-            if(user){
-                await UserService.delete(user);
-            }
+            // if(user){
+            //     await UserService.delete(user);
+            // }
 
             throw error;
         }
@@ -137,9 +137,9 @@ class CompanyService {
         if(company.email !== companyUpdate.email){
             company.email = companyUpdate.email;
 
-            let user = await UserService.findById(company.userId);
-            user.email = company.email.toUpperCase();
-            await UserService.update({user});
+            // let user = await UserService.findById(company.userId);
+            // user.email = company.email.toUpperCase();
+            // await UserService.update({user});
             
         }
 
@@ -327,7 +327,7 @@ class CompanyService {
         const company = await Company.findByPk(id);
         await TelephoneService.deleteByCompanyId(id);
         await GaleryService.deleteByCompanyId(id);
-        await UserService.delete({id:company.userId});
+        //await UserService.delete({id:company.userId});
 
         return await company.destroy();
 
