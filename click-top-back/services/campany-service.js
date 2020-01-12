@@ -135,12 +135,16 @@ class CompanyService {
         }
 
         if(companyUpdate.email && company.email != companyUpdate.email){
-            company.email = companyUpdate.email;
+            company.email = companyUpdate.email;            
+        }
 
-            // let user = await UserService.findById(company.userId);
-            // user.email = company.email.toUpperCase();
-            // await UserService.update({user});
-            
+
+        if(companyUpdate.id_city && company.id_city != companyUpdate.id_city){
+            company.id_city = companyUpdate.id_city;            
+        }
+
+        if(companyUpdate.id_category && company.id_category != companyUpdate.id_category){
+            company.id_category = companyUpdate.id_category;            
         }
 
         if(companyUpdate.description && company.description != companyUpdate.description){
