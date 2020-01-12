@@ -87,6 +87,25 @@ router.delete('/:id',middlewareJwt, async(request, response)=>{
  */
 router.get('', middlewareJwt, async (request, response) => {
     try {
+       const  result = await UserService.findAll(request);
+       response.send(result);
+    } catch (error) {       
+        response.status(500).send(error.message);
+    }
+});
+
+/** 
+ * @summary List a users
+ * @author Thiago Godoy
+ * @param limit 
+ * @param offset
+ * @param name 
+ * @param email
+ * @param loadCompany 
+ * @method GET 
+ */
+router.get('/byEmailOrName', middlewareJwt, async (request, response) => {
+    try {
        const  result = await UserService.findByEmailOrName(request);
        response.send(result);
     } catch (error) {       

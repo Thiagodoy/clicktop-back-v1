@@ -15,6 +15,10 @@ class UserService {
         return await UserRepository.findByPk(id);        
     }
 
+    async findAll(request){
+        return await UserRepository.findAll();        
+    }
+
     async findByEmail(email, isAuth) {
 
         let include = isAuth ? [{model: Company}] : [];
@@ -115,62 +119,48 @@ class UserService {
     async update(request){ 
 
 
-        const userTemp  = request.user ? request.user : request.body;    
+        const userTemp  = request.user && !request.body.userUpdate ? request.user : request.body.userUpdate;    
 
-        const user = await this.findById(request.user.id);
+        const user = await this.findById(userTemp.id);
 
-        if(!!userTemp.name && userTemp.name !== user.name){
+        if(userTemp.name && userTemp.name != user.name){
             user.name = userTemp.name;
         }
 
-        if(!!userTemp.email && userTemp.email !== user.email){
+        if(userTemp.email && userTemp.email != user.email){
             user.email = userTemp.email;
         }
 
-        if(!!userTemp.telefone && userTemp.telefone !== user.telefone){
+        if(userTemp.telefone && userTemp.telefone != user.telefone){
             user.telefone = userTemp.telefone;
         }
 
-        if(!!userTemp.celular && userTemp.celular !== user.celular){
+        if(userTemp.celular && userTemp.celular != user.celular){
             user.celular = userTemp.celular;
         }
 
-        if(!!userTemp.profile && userTemp.profile !== user.profile){
+        if(userTemp.profile && userTemp.profile != user.profile){
             user.profile = userTemp.profile;
         }
 
-        if(!!userTemp.rg && userTemp.rg !== user.rg){
+        if(userTemp.rg && userTemp.rg != user.rg){
             user.rg = userTemp.rg;
         }
 
-        if(!!userTemp.cpf && userTemp.cpf !== user.cpf){
+        if(userTemp.cpf && userTemp.cpf != user.cpf){
             user.cpf = userTemp.cpf;
         }
 
-        if(!!userTemp.image && userTemp.image !== user.image){
+        if(userTemp.image && userTemp.image != user.image){
             user.image = userTemp.image;
         }
 
-
-
-        let oldPassword = userTemp.oldPassword ? userTemp.oldPassword : userTemp.password; 
-
-        if(userTemp.oldPassword){
-            const validPass = await bcrypt.compare(oldPassword, user.password);
-        
-            if (!validPass){
-                throw new Error('Password inválido!');
-            } 
-    
+        if(userTemp.password){
             const salt = await bcrypt.genSalt(10);
-            user.password = await bcrypt.hash(request.body.newPassword, salt);
+            user.password = await bcrypt.hash(userTemp.password, salt);
         }
 
-
-       
-
         return await user.save();
-
     }
 
     async auth(request){
