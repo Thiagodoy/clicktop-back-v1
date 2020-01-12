@@ -130,11 +130,11 @@ class CompanyService {
         const company = await Company.findByPk(id);
         const companyUpdate = request.body;
 
-        if(company.name !== companyUpdate.name){
+        if(companyUpdate.name && company.name != companyUpdate.name){
             company.name = companyUpdate.name;
         }
 
-        if(company.email !== companyUpdate.email){
+        if(companyUpdate.email && company.email != companyUpdate.email){
             company.email = companyUpdate.email;
 
             // let user = await UserService.findById(company.userId);
@@ -143,59 +143,59 @@ class CompanyService {
             
         }
 
-        if(company.description !== companyUpdate.description){
+        if(companyUpdate.description && company.description != companyUpdate.description){
             company.description = companyUpdate.description;
         }
 
-        if(company.address !== companyUpdate.address){
+        if(companyUpdate.address && company.address != companyUpdate.address){
             company.address = companyUpdate.address;
         }
 
-        if(company.address_neighborhood !== companyUpdate.address_neighborhood){
+        if(company.address_neighborhood != companyUpdate.address_neighborhood){
             company.address_neighborhood = companyUpdate.address_neighborhood;
         }
 
-        if(company.address_complement !== companyUpdate.address_complement){
+        if(companyUpdate.address_complement && company.address_complement != companyUpdate.address_complement){
             company.address_complement = companyUpdate.address_complement;
         }
 
-        if(company.address_number !== companyUpdate.address_number){
+        if(companyUpdate.address_number && company.address_number != companyUpdate.address_number){
             company.address_number = companyUpdate.address_number;
         }
 
-        if(company.zip_code !== companyUpdate.zip_code){
+        if(companyUpdate.zip_code && company.zip_code != companyUpdate.zip_code){
             company.zip_code = companyUpdate.zip_code;
         }
 
-        if(company.website !== companyUpdate.website){
+        if(companyUpdate.website && company.website != companyUpdate.website){
             company.website = companyUpdate.website;
         }
 
-        if(company.facebook !== companyUpdate.facebook){
+        if(companyUpdate.facebook && company.facebook != companyUpdate.facebook){
             company.facebook = companyUpdate.facebook;
         }
 
-        if(company.instagran !== companyUpdate.instagran){
+        if(companyUpdate.instagran && company.instagran != companyUpdate.instagran){
             company.instagran = companyUpdate.instagran;
         }
 
-        if(company.main_products !== companyUpdate.main_products){
+        if(companyUpdate.main_products && company.main_products != companyUpdate.main_products){
             company.main_products = companyUpdate.main_products;
         }
 
-        if(company.opening_hours !== companyUpdate.opening_hours){
+        if(companyUpdate.opening_hours && company.opening_hours != companyUpdate.opening_hours){
             company.opening_hours = companyUpdate.opening_hours;
         }
 
-        if(company.closing_hours !== companyUpdate.closing_hours){
+        if(companyUpdate.closing_hours && company.closing_hours != companyUpdate.closing_hours){
             company.closing_hours = companyUpdate.closing_hours;
         }
 
-        if(company.keys !== companyUpdate.keys){
+        if(companyUpdate.keys && company.keys != companyUpdate.keys){
             company.keys = companyUpdate.keys;
         }
 
-        if(company.id_plan !== companyUpdate.id_plan){
+        if(companyUpdate.id_plan && company.id_plan != companyUpdate.id_plan){
             company.id_plan = companyUpdate.id_plan;
         }
 
@@ -212,11 +212,33 @@ class CompanyService {
             delete request.body.galery;
         }
 
-        await company.save();
-        await TelephoneService.deleteByCompanyId(id);
-        await GaleryService.deleteByCompanyId(id);
+
+        
+        let resultCity = await CityService.findByPk(parseInt(company.id_city));
+        let resultState = await StateService.findByPk(resultCity.stateId);
+
+        
+
+        let req = {
+            address: company.address,
+            address_number: company.address_number,
+            city: resultCity.name_city,
+            state: resultState.initials
+        }
+
+         let resultLocation = await this.getLocation(req);
+
+         company.latitude = `${resultLocation.lat}`;
+         company.longitude = `${resultLocation.lng}`;
+         company.point_text  = `POINT(${resultLocation.lat} ${resultLocation.lng})`;
+
+
+
+        await company.save();        
+        
 
         if(tempPhones){
+            await TelephoneService.deleteByCompanyId(id);
             tempPhones.forEach(t=>{
                 t.companyId = company.id;
             });
@@ -224,6 +246,7 @@ class CompanyService {
         }
 
         if(temGalery){
+            await GaleryService.deleteByCompanyId(id);
             temGalery.forEach(g=>{
                 g.companyId = company.id;
             });

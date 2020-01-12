@@ -127,6 +127,31 @@ class UserService {
             user.email = userTemp.email;
         }
 
+        if(!!userTemp.telefone && userTemp.telefone !== user.telefone){
+            user.telefone = userTemp.telefone;
+        }
+
+        if(!!userTemp.celular && userTemp.celular !== user.celular){
+            user.celular = userTemp.celular;
+        }
+
+        if(!!userTemp.profile && userTemp.profile !== user.profile){
+            user.profile = userTemp.profile;
+        }
+
+        if(!!userTemp.rg && userTemp.rg !== user.rg){
+            user.rg = userTemp.rg;
+        }
+
+        if(!!userTemp.cpf && userTemp.cpf !== user.cpf){
+            user.cpf = userTemp.cpf;
+        }
+
+        if(!!userTemp.image && userTemp.image !== user.image){
+            user.image = userTemp.image;
+        }
+
+
 
         let oldPassword = userTemp.oldPassword ? userTemp.oldPassword : userTemp.password; 
 

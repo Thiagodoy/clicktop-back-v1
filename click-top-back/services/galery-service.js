@@ -10,7 +10,7 @@ class GaleryService{
     }
 
     async delete(id){
-        const galery = await GaleryService.findByPk(id);
+        const galery = await GaleryRepository.findByPk(id);
         return await galery.destroy();
     }
 

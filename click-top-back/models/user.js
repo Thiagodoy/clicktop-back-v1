@@ -33,7 +33,7 @@ module.exports = (s, DataTypes) => {
         rg: {
             type: Sequelize.STRING,
             allowNull: false
-        },
+        },        
         password: {
             type: Sequelize.STRING,
             allowNull: false
@@ -48,6 +48,14 @@ module.exports = (s, DataTypes) => {
         },
         profile: {
             type: Sequelize.STRING,                                   
+        },
+        celular: {
+            type: Sequelize.STRING,
+            allowNull: true
+        },
+        telefone: {
+            type: Sequelize.STRING,
+            allowNull: true
         },
     }, {
         sequelize,

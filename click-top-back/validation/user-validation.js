@@ -6,8 +6,9 @@ const schema = {
     password:Joi.string().min(6).required(),
     profile:Joi.string().min(1).required(),
     cpf:Joi.string(),
-    rg:Joi.string()
-    
+    rg:Joi.string(),
+    telefone:Joi.string(),
+    celular:Joi.string()    
 }
 
 

@@ -17,6 +17,7 @@ const routerCity =  require('./routes/city-route');
 const routerState =  require('./routes/state-route');
 const routerPost =  require('./routes/post-route');
 const routerPlan =  require('./routes/plan-route');
+const routerGalery =  require('./routes/galery-route');
 const routerVersion =  require('./routes/version-router');
 
 const {sequelize} = require('./data/index');
@@ -47,6 +48,7 @@ app.use('/api/state', routerState);
 app.use('/api/post', routerPost);
 app.use('/api/version', routerVersion);
 app.use('/api/plan',routerPlan)
+app.use('/api/galery',routerGalery);
 
 
 //app.get('/',(req,res)=> res.send('Olá'));
