@@ -108,7 +108,7 @@ class CompanyService {
             }
 
 
-            return resultCompany;
+            return resultCompany.id;
 
 
         }catch(error){
@@ -201,6 +201,10 @@ class CompanyService {
 
         if(companyUpdate.id_plan && company.id_plan != companyUpdate.id_plan){
             company.id_plan = companyUpdate.id_plan;
+        }
+
+        if(companyUpdate.observation && company.observation != companyUpdate.observation){
+            company.observation = companyUpdate.observation;
         }
 
         let tempPhones = undefined;

@@ -17,6 +17,8 @@ var router = express.Router();
 router.post('', middlewareJwt, async (request, response) => {
 
     try {
+        //console.log('size', request.socket.bytesRead);
+
         const result = await GaleryService.save(request.body);
         response.send(result);
     } catch (error) {

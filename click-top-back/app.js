@@ -28,13 +28,20 @@ const Telephone = sequelize.import('./models/telephone');
 const Post = sequelize.import('./models/post');
 const Category = sequelize.import('./models/category');
 const User = sequelize.import('./models/user');
+const bodyParser = require('body-parser');
 
 const {importData} = require('./data/category-script');
 //importData();
 
 //sequelize.sync({force:true});
+app.use(bodyParser.json({limit: '100mb', extended: true}))
+app.use(bodyParser.urlencoded({limit: '100mb', extended: true}))
 
-app.use(express.json());
+//app.use(express.json());
+
+//app.use(express.json({limit: '50mb'}));
+//app.use(express.urlencoded({limit: '50mb'}));//
+//app.use(bodyParser({limit: '50mb'}));
 
 // app.use('/',async(req,resp)=>{
 //     resp.send("Bem vindo a api CLICK-TOP!")
@@ -49,6 +56,8 @@ app.use('/api/post', routerPost);
 app.use('/api/version', routerVersion);
 app.use('/api/plan',routerPlan)
 app.use('/api/galery',routerGalery);
+
+
 
 
 //app.get('/',(req,res)=> res.send('Olá'));

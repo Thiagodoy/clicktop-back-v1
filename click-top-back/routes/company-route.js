@@ -10,6 +10,8 @@ const CompanyService = require('../services/campany-service');
 
 
 
+
+
 /**
  * @summary Save a company
  * @author Thiago Godoy
@@ -17,12 +19,12 @@ const CompanyService = require('../services/campany-service');
  */
 router.post('', async (request, response) => {
 
-
+//100kb
     try {
         const result = await CompanyService.save(request, response);
 
         if (result) {
-            response.send();
+            response.send({id:result});
         } else {
             response.status(500).send('Não foi possivel salvar a compania');
         }

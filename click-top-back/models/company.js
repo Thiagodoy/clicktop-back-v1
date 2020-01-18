@@ -89,6 +89,9 @@ module.exports = (s, DataTypes) => {
         id_plan: {
             type: Sequelize.INTEGER,                        
         },
+        observation: {
+            type: Sequelize.STRING,                        
+        },
     }, {
         sequelize,
         modelName: 'company'

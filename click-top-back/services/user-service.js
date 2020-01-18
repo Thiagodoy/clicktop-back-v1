@@ -36,7 +36,7 @@ class UserService {
 
     async delete(request){
 
-        const id  =  (request.param) ? request.param.id : request.id;        
+        const id  =  (request.params) ? request.params.id : request.id;        
         await sequelize.query(`DELETE FROM users where id =${id}`); 
         
     }
@@ -191,7 +191,7 @@ class UserService {
 
 
         const token = await jwt.sign(userTemp, process.env.TOKEN_SECRET, {
-            expiresIn: '1h'
+            expiresIn: '3h'
         });
 
         const res = {
