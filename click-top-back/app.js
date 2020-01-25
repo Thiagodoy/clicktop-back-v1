@@ -18,6 +18,7 @@ const routerState =  require('./routes/state-route');
 const routerPost =  require('./routes/post-route');
 const routerPlan =  require('./routes/plan-route');
 const routerGalery =  require('./routes/galery-route');
+const routerTourism =  require('./routes/tourism-route');
 const routerVersion =  require('./routes/version-router');
 
 const {sequelize} = require('./data/index');
@@ -28,6 +29,7 @@ const Telephone = sequelize.import('./models/telephone');
 const Post = sequelize.import('./models/post');
 const Category = sequelize.import('./models/category');
 const User = sequelize.import('./models/user');
+const Tourism = sequelize.import('./models/tourism');
 const bodyParser = require('body-parser');
 
 const {importData} = require('./data/category-script');
@@ -47,6 +49,8 @@ app.use(bodyParser.urlencoded({limit: '100mb', extended: true}))
 //     resp.send("Bem vindo a api CLICK-TOP!")
 // });
 
+//Tourism.sync();
+
 app.use('/api/company',routerCompany);
 app.use('/api/user',routerUser);
 app.use('/api/category',routerCategory);
@@ -56,6 +60,7 @@ app.use('/api/post', routerPost);
 app.use('/api/version', routerVersion);
 app.use('/api/plan',routerPlan)
 app.use('/api/galery',routerGalery);
+app.use('/api/tourism',routerTourism);
 
 
 
